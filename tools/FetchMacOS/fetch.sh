@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # fetch.sh: Run fetch-macos.py with safety checks
 # by Foxlet <foxlet@furcode.co>
@@ -41,8 +41,8 @@ getpython(){
     fi
 }
 
-getpip
-getpython
-$PYTHONBIN fetch-macos.py "$@"
+# getpip
+# getpython
+./fetch-macos.py "$@"
 
 exit;

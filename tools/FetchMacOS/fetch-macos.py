@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 """fetch-macos.py: Fetches macOS products from Apple's SoftwareUpdate service."""
 
@@ -54,7 +54,7 @@ class Filesystem:
         plist_raw = requests.get(url, headers=ClientMeta.swupdate)
         plist_data = plist_raw.text.encode('UTF-8')
         return plist_data
-    
+
     @staticmethod
     def parse_plist(catalog_data):
         if sys.version_info > (3, 0):
@@ -99,14 +99,14 @@ class SoftwareService:
         for product in products:
             if products.get(product, {}).get('ExtendedMetaInfo', {}).get('InstallAssistantPackageIdentifiers', {}).get('OSInstall', {}) == 'com.apple.mpkg.OSInstall':
                 ospackages.append(product)
-                
+
         # Iterate for an specific version
         candidates = []
         for product in ospackages:
             meta_url = products.get(product, {}).get('ServerMetadataURL', {})
             if self.version in Filesystem.parse_plist(Filesystem.fetch_plist(meta_url)).get('CFBundleShortVersionString', {}):
                 candidates.append(product)
-        
+
         return candidates
 
 
@@ -148,7 +148,7 @@ def fetchmacos(output_dir="BaseSystem/", catalog_version="10.15", catalog_id="Pu
     except KeyError:
         print("Product ID {} could not be found.".format(product_id))
         exit(1)
-        
+
     logging.info("Selected macOS Product: {}".format(product_id))
 
     # Download package to disk
